@@ -22,7 +22,7 @@ class ChatUser {
     try {
       this._send(data);
     } catch (err) {
-      return err; // If trying to send to a user fails, ignore it
+      console.error(err); // If trying to send to a user fails, ignore it
     }
   }
 
@@ -57,7 +57,9 @@ class ChatUser {
     let msg = JSON.parse(jsonData);
 
     if (msg.type === 'join') this.handleJoin(msg.name);
-    else if (msg.type === 'chat') this.handleChat(msg.text);
+    else if (msg.type === 'chat' || msg.type === 'get-joke') this.handleChat(msg.text);
+    else if (msg.type === 'get-members') this.handleChat(this.listMembers());
+    
     else throw new Error(`bad message: ${msg.type}`);
   }
 
@@ -69,6 +71,12 @@ class ChatUser {
       type: 'note',
       text: `${this.name} left ${this.room.name}.`
     });
+  }
+
+  listMembers() {
+    let members = Array.from(this.room.members);
+    let membersList = members.map(m => ` ${m.name}`);
+    return `Current room members: ${membersList}`;
   }
 }
 

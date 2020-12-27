@@ -36,6 +36,8 @@ class Room {
 
   join(member) {
     this.members.add(member);
+    // console.log(`current member list: ${this.members}`);
+    // console.log(`first member ${this.members[0]}`);
   }
 
   /** member leaving a room. */
